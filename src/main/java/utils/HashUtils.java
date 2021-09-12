@@ -66,6 +66,10 @@ public class HashUtils {
      * @return 字符串形式的SimHash值
      */
     public static String getSimHash(String textStr){
+        if(textStr == null | textStr == ""){
+            System.out.println("读取字符串为空");
+            return null;
+        }
         List<Term> wordList = StandardTokenizer.segment(textStr);
         //128位的加权向量表
         int[] weightedList = new int[HASH_BIN_LENGTH];
@@ -79,11 +83,11 @@ public class HashUtils {
                 }
             }
         }
-        StringBuilder builder1 = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
         for(int i = 0 ; i < HASH_BIN_LENGTH ; i++){
-            builder1.append((weightedList[i] > 0 ? 1:0));
+            builder.append((weightedList[i] > 0 ? 1:0));
         }
-        return builder1.toString();
+        return builder.toString();
     }
 
 }

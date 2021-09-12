@@ -17,8 +17,8 @@ public class IOUtilsTest {
 
     @Test
     public void writeTest(){
-        boolean isCompete = IOUtils.write("writeTest", prefix + answerPath);
-        System.out.println(isCompete + "\n" + IOUtils.read(prefix + answerPath));
+        IOUtils.write("writeTest", prefix + answerPath);
+        System.out.println(IOUtils.read(prefix + answerPath));
         IOUtils.write("", "");
     }
 }

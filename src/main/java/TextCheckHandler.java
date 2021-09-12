@@ -1,6 +1,8 @@
 import utils.HashUtils;
 import utils.IOUtils;
 
+import java.text.DecimalFormat;
+
 /**
  * @author chenzhuohong
  */
@@ -30,14 +32,15 @@ public class TextCheckHandler {
      * @param answerPath 写入结果的路径
      */
     public static void textCheck(String originPath, String comparePath, String answerPath){
+        DecimalFormat format = new DecimalFormat("0.00");
         //计算初始文本的simhash
         String originSimHash = HashUtils.getSimHash(IOUtils.read(originPath));
         //计算对比文本的simhash
         String compareSimHash = HashUtils.getSimHash(IOUtils.read(comparePath));
         //计算两文本重复率
-        double repetitiveRate =(128 - getHammingDistance(originSimHash, compareSimHash))/128;
+        String repetitiveRate =format.format((128 - getHammingDistance(originSimHash, compareSimHash))/128);
         //将重复率写入结果路径
-        IOUtils.write(Double.toString(repetitiveRate), answerPath);
+        IOUtils.write(repetitiveRate, answerPath);
     }
 
     public static void main(String[] args) {

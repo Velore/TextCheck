@@ -8,14 +8,6 @@ public class HandlerTest {
 
     private final String comparePath = "orig_0.8_add.txt";
 
-    private final String comparePath2 = "orig_0.8_del.txt";
-
-    private final String comparePath3 = "orig_0.8_dis_1.txt";
-
-    private final String comparePath4 = "orig_0.8_dis_10.txt";
-
-    private final String comparePath5 = "orig_0.8_dis_15.txt";
-
     private final String answerPath = "ans.txt";
 
     @Test
@@ -25,21 +17,21 @@ public class HandlerTest {
 
     @Test
     public void textCheckTest2(){
-        TextCheckHandler.textCheck(prefix + originPath,prefix + comparePath2,prefix + answerPath);
+        TextCheckHandler.textCheck(null,prefix + comparePath,prefix + answerPath);
     }
 
     @Test
     public void textCheckTest3(){
-        TextCheckHandler.textCheck(prefix + originPath,prefix + comparePath3,prefix + answerPath);
+        TextCheckHandler.textCheck(prefix + originPath,prefix + comparePath,null);
     }
 
     @Test
     public void textCheckTest4(){
-        TextCheckHandler.textCheck(prefix + originPath,prefix + comparePath4,prefix + answerPath);
+        TextCheckHandler.textCheck(prefix + originPath,"",prefix + answerPath);
     }
 
     @Test
     public void textCheckTest5(){
-        TextCheckHandler.textCheck(prefix + originPath,prefix + comparePath5,prefix + answerPath);
+        TextCheckHandler.textCheck(prefix + originPath,prefix + comparePath,"");
     }
 }
