@@ -1,8 +1,11 @@
-package Utils;
+package utils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * @author chenzhuohong
+ */
 public class IOUtils {
 
     /**
@@ -36,8 +39,9 @@ public class IOUtils {
     public static boolean write(String answer, String path){
         try{
             FileWriter writer = new FileWriter(path, true);
-            writer.write(answer);
+            writer.write(answer+"\n");
             writer.flush();
+            System.out.println("答案已写入文件");
             return true;
         }catch (Exception e){
             e.printStackTrace();
