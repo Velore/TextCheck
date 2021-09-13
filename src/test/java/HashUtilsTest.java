@@ -14,6 +14,7 @@ public class HashUtilsTest {
     public void getHashTest(){
         System.out.println(HashUtils.getHash(IOUtils.read(prefix + originPath)));
         System.out.println(HashUtils.getHash(IOUtils.read("")));
+        System.out.println(HashUtils.getHash(IOUtils.read(null)));
     }
 
     @Test

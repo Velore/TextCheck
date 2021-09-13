@@ -15,35 +15,34 @@ public class TextCheckHandler {
      * @return 海明距离
      */
     public static double getHammingDistance(String simHash1, String simHash2){
+        if(simHash1 == null | simHash2 == null){
+            return 128;
+        }
         double hammingDistance = 0;
-        for(int i = 0; i<128 ; i++){
-            //对比simhash的每一位
-            if(simHash1.charAt(i)!=simHash2.charAt(i)){
-                hammingDistance++;
-            }
+        //计算海明距离
+        for(int i = 0; i<simHash1.length() ; i++){
+            hammingDistance += simHash1.charAt(i) ^ simHash2.charAt(i);
         }
         return hammingDistance;
     }
 
     /**
      * 主启动类
-     * @param originPath 初始文本路径
-     * @param comparePath 对比文本路径
-     * @param answerPath 写入结果的路径
+     * @param originStr 初始文本
+     * @param compareStr 对比文本
+     * @return  返回文本对比的重复率
      */
-    public static void textCheck(String originPath, String comparePath, String answerPath){
+    public static String textCheck(String originStr, String compareStr){
         DecimalFormat format = new DecimalFormat("0.00");
         //计算初始文本的simhash
-        String originSimHash = HashUtils.getSimHash(IOUtils.read(originPath));
+        String originSimHash = HashUtils.getSimHash(originStr);
         //计算对比文本的simhash
-        String compareSimHash = HashUtils.getSimHash(IOUtils.read(comparePath));
-        //计算两文本重复率
-        String repetitiveRate =format.format((128 - getHammingDistance(originSimHash, compareSimHash))/128);
-        //将重复率写入结果路径
-        IOUtils.write(repetitiveRate, answerPath);
+        String compareSimHash = HashUtils.getSimHash(compareStr);
+        //计算并返回对比文本重复率，结果保留两位小数
+        return format.format((128 - getHammingDistance(originSimHash, compareSimHash))/128);
     }
 
     public static void main(String[] args) {
-        textCheck(args[0], args[1], args[2]);
+        IOUtils.write(textCheck(IOUtils.read(args[0]), IOUtils.read(args[1])), args[2]);
     }
 }

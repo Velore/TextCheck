@@ -66,7 +66,7 @@ public class HashUtils {
      * @return 字符串形式的SimHash值
      */
     public static String getSimHash(String textStr){
-        if(textStr == null | textStr == ""){
+        if(textStr == null | "".equals(textStr)){
             System.out.println("读取字符串为空");
             return null;
         }
