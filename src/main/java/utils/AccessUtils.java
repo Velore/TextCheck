@@ -4,9 +4,10 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 /**
+ * 文件读写工具类
  * @author chenzhuohong
  */
-public class IOUtils {
+public class AccessUtils {
 
     /**
      * 从绝对路径中读入txt文本
@@ -14,6 +15,9 @@ public class IOUtils {
      * @return 文本字符串
      */
     public static String read(String readPath){
+        if(readPath == null){
+            throw new NullPointerException("文本路径为空");
+        }
         StringBuilder builder = new StringBuilder();
         try{
             BufferedReader reader = new BufferedReader(
@@ -26,8 +30,7 @@ public class IOUtils {
             reader.close();
             return builder.toString();
         }catch (Exception e){
-            e.printStackTrace();
-            return null;
+            throw new NullPointerException("文本路径错误");
         }
     }
 

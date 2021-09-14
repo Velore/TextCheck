@@ -21,7 +21,7 @@ public class HashUtils {
      * @param bytes 字节数组
      * @return 二进制字符串
      */
-    private static String bytesToBinString(byte[] bytes) {
+    public static String bytesToBinString(byte[] bytes) {
         StringBuilder builder = new StringBuilder();
         for (byte b : bytes) {
             String bin = Integer.toBinaryString(0xFF & b);
@@ -35,59 +35,63 @@ public class HashUtils {
 
     /**
      * 输入一个词，获取词的hash值
-     * @param word 要获取hash值的词
+     * @param str 要获取hash值的词
      * @return 字符串形式的hash值
      */
-    public static String getHash(String word){
-        StringBuilder wordHash = null;
+    public static String getHash(String str){
+        StringBuilder strHash = null;
         try{
             //通过md5算法获取字符串的摘要信息
             MessageDigest md = MessageDigest.getInstance("MD5");
             //将字符串的摘要信息更新至MessageDigest
-            md.update(word.getBytes());
+            md.update(str.getBytes());
             //获取字符串的二进制hash并转换为字符串
-            wordHash = new StringBuilder(bytesToBinString(md.digest()));
-            int a = HASH_BIN_LENGTH - wordHash.length();
-            //hash长度不足128位，在末尾补0
-            if(a > 0){
-                for(int i = 0 ; i < a ; i++){
-                    wordHash.append("0");
+            strHash = new StringBuilder(bytesToBinString(md.digest()));
+            //diffDigit为hash位数的差值
+            int diffDigit = HASH_BIN_LENGTH - strHash.length();
+            //diffDigit不为0,即hash长度不足128位,在末尾补0
+            if(diffDigit > 0){
+                for(int i = 0 ; i < diffDigit ; i++){
+                    strHash.append("0");
                 }
             }
         }catch (Exception e){
             e.printStackTrace();
         }
-        return wordHash.toString();
+        assert strHash != null : "";
+        return strHash.toString();
     }
 
     /**
      * 获取字符串的SimHash值
-     * @param textStr 要获取SimHash的字符串
+     * @param str 要获取SimHash的字符串
      * @return 字符串形式的SimHash值
      */
-    public static String getSimHash(String textStr){
-        if(textStr == null | "".equals(textStr)){
+    public static String getSimHash(String str){
+        if(str == null | "".equals(str)){
             System.out.println("读取字符串为空");
             return null;
         }
-        List<Term> wordList = StandardTokenizer.segment(textStr);
+        List<Term> wordList = StandardTokenizer.segment(str);
         //128位的加权向量表
         int[] weightedList = new int[HASH_BIN_LENGTH];
         for (Term term : wordList) {
             if(term.nature != Nature.w){
-                //wordHash每个分出的词都计算出128位哈希值
-                String wordHash = HashUtils.getHash(term.word);
-                for (int j = 0; j < HASH_BIN_LENGTH; j++) {
-                    //哈希值的每一位都与1比较，若等于1则乘以1，否则乘以-1，最后加在加权向量表上
-                    weightedList[j] += (wordHash.charAt(j) == '1' ? 1 : -1);
+                //strHash每个分出的词都计算出128位哈希值
+                String strHash = HashUtils.getHash(term.word);
+                for (int index = 0; index < weightedList.length; index++) {
+                    // 哈希值的每一位都与1比较，若等于1则乘以1，否则乘以-1，最后加在加权向量表上
+                    // 分词出现的频率就是分词的权值,分词每出现一次，权值+1
+                    // 因此无需额外处理分词权值
+                    weightedList[index] += (strHash.charAt(index) == '1' ? 1 : -1);
                 }
             }
         }
-        StringBuilder builder = new StringBuilder();
-        for(int i = 0 ; i < HASH_BIN_LENGTH ; i++){
-            builder.append((weightedList[i] > 0 ? 1:0));
+        StringBuilder simHashStrBuilder = new StringBuilder();
+        for (int index : weightedList) {
+            simHashStrBuilder.append((index > 0 ? 1 : 0));
         }
-        return builder.toString();
+        return simHashStrBuilder.toString();
     }
 
 }
