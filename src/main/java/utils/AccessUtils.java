@@ -41,10 +41,11 @@ public class AccessUtils {
      */
     public static void write(String answer, String writePath){
         try{
+            System.out.println("文本重复率:" + answer);
             FileWriter writer = new FileWriter(writePath, true);
             writer.write(answer+"\n");
             writer.flush();
-            System.out.println("查重结果已写入文件");
+            System.out.println("查重结果已写入文件:" + writePath);
         }catch (Exception e){
             System.out.println("查重结果写入文件失败");
         }

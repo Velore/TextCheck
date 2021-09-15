@@ -30,20 +30,20 @@ public class TextCheckTest {
 
     @Test
     public void textCheckTest3(){
-        //读取文件路径为空，读取文件失败，抛出异常
-        AccessUtils.write(ResultUtils.textCheck(
-                AccessUtils.read(null),
+        //读取文件路径不正确，读取文件失败，抛出异常
+        System.out.println(ResultUtils.textCheck(
+                AccessUtils.read(""),
                 AccessUtils.read(prefix+comparePath)
-        ), prefix + answerPath);
+        ));
     }
 
     @Test
     public void textCheckTest4(){
-        //读取文件路径不正确，读取文件失败，抛出异常
-        AccessUtils.write(ResultUtils.textCheck(
-                AccessUtils.read(""),
+        //读取文件路径为空，读取文件失败，抛出异常
+        System.out.println(ResultUtils.textCheck(
+                AccessUtils.read(null),
                 AccessUtils.read(prefix+comparePath)
-        ), prefix + answerPath);
+        ));
     }
 
     @Test
